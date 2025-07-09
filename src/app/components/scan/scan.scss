@@ -1,0 +1,10 @@
+/* src/app/components/scan/scan.scss */
+.scan-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+zxing-scanner {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}

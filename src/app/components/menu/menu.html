@@ -1,0 +1,50 @@
+<div class="menu-container">
+  <div class="customer-info">
+    <h1 class="app-title">🍽️ Welcome to Digital Hotel Menu</h1>
+
+    👋 Welcome, <strong>{{ customerName }}</strong><br />
+    📱 {{ customerMobile }} | 🪑 Table No: {{ tableNumber }}
+  </div>
+
+
+  <div *ngFor="let section of foodItems" class="menu-category">
+    <h2 class="category-title">🍴 {{ section.category }}</h2>
+    <div class="menu-grid">
+      <div class="menu-card" *ngFor="let item of section.items">
+        <h4>{{ item.name }}</h4>
+        <p>₹{{ item.price }}</p>
+        <button (click)="addToCart(item)">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Cart Icon -->
+  <div class="cart-icon" *ngIf="cart.length > 0" (click)="toggleBill()">
+    🛒
+    <span class="badge">{{ cart.length }}</span>
+  </div>
+
+  <!-- Bill Section -->
+  <div class="bill-section" *ngIf="showBill && cart.length > 0">
+    <h3>🧾 Order Summary</h3>
+    <ul>
+      <li *ngFor="let item of cart; let i = index">
+        {{ item.name }} - ₹{{ item.price }}
+        <button class="remove-btn" (click)="removeFromCart(i)">❌</button>
+      </li>
+    </ul>
+    <p class="total"><strong>Total: ₹{{ total }}</strong></p>
+    <button class="place-btn" (click)="placeOrder()">Place Order</button>
+  </div>
+</div>
+
+<!-- 💳 Payment Popup -->
+<div class="payment-popup" *ngIf="showPaymentPopup">
+  <div class="popup-box">
+    <h3>💳 Pay First</h3>
+    <p>Please complete your payment before finalizing your order.</p>
+    <p><strong>Amount:</strong> ₹{{ total }}</p>
+    <button (click)="confirmPayment()">Pay Now</button>
+    <button class="cancel-btn" (click)="showPaymentPopup = false">Cancel</button>
+  </div>
+</div>

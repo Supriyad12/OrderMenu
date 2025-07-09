@@ -1,0 +1,142 @@
+.login-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 30px 25px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  background-image: linear-gradient(to right, #ffe0b2, #ffd180);
+}
+
+.login-container h2 {
+  margin-bottom: 10px;
+  color: #4e342e;
+}
+
+.login-container p {
+  margin-bottom: 25px;
+  color: #6d4c41;
+  font-size: 14px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  color: #5d4037;
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #ff7043;
+  box-shadow: 0 0 5px rgba(255, 112, 67, 0.4);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #ff7043;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #f4511e;
+}
+.login-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 30px 25px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  background-image: linear-gradient(to right, #ffe0b2, #ffd180);
+}
+
+.login-container h2 {
+  margin-bottom: 10px;
+  color: #4e342e;
+}
+
+.login-container p {
+  margin-bottom: 25px;
+  color: #6d4c41;
+  font-size: 14px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  color: #5d4037;
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #ff7043;
+  box-shadow: 0 0 5px rgba(255, 112, 67, 0.4);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #ff7043;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #f4511e;
+}

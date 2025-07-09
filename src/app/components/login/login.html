@@ -1,0 +1,25 @@
+<div class="login-container">
+  <h2>🍽️ Welcome to FoodMine</h2>
+  <p>Please enter your details to continue</p>
+
+  <form (ngSubmit)="submitLogin()" #loginForm="ngForm" novalidate>
+    <div class="input-group">
+      <label for="name">👤 Your Name</label>
+      <input type="text" id="name" name="name" [(ngModel)]="customerName" required placeholder="Name" />
+    </div>
+
+    <div class="input-group">
+      <label for="mobile">📱 Mobile Number</label>
+      <input type="tel" id="mobile" name="mobile" [(ngModel)]="customerMobile" required placeholder="10-digit mobile" />
+
+    </div>
+
+    <div class="input-group">
+      <label for="mobile">Table Number</label>
+      <input type="text" name="table" [(ngModel)]="tableNumber" placeholder="Table Number (e.g. T5)" required />
+
+    </div>
+
+    <button type="submit" [disabled]="!loginForm.valid">Continue to Menu</button>
+  </form>
+</div>
