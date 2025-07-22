@@ -1,11 +1,10 @@
-<div class="menu-container">
+<!-- MAIN MENU UI (hidden after order is confirmed) -->
+<div class="menu-container" *ngIf="!orderConfirmed">
   <div class="customer-info">
-    <h1 class="app-title">🍽️ Welcome to Digital Hotel Menu</h1>
-
+    <h1 class="app-title">🍽️ Welcome to Digital Hotel Menu.</h1>
     👋 Welcome, <strong>{{ customerName }}</strong><br />
     📱 {{ customerMobile }} | 🪑 Table No: {{ tableNumber }}
   </div>
-
 
   <div *ngFor="let section of foodItems" class="menu-category">
     <h2 class="category-title">🍴 {{ section.category }}</h2>
@@ -19,7 +18,7 @@
   </div>
 
   <!-- Floating Cart Icon -->
-  <div class="cart-icon" *ngIf="cart.length > 0" (click)="toggleBill()">
+  <div class="cart-icon" *ngIf="cart.length > 0 && !showPaymentPopup" (click)="toggleBill()">
     🛒
     <span class="badge">{{ cart.length }}</span>
   </div>
@@ -29,8 +28,9 @@
     <h3>🧾 Order Summary</h3>
     <ul>
       <li *ngFor="let item of cart; let i = index">
-        {{ item.name }} - ₹{{ item.price }}
-        <button class="remove-btn" (click)="removeFromCart(i)">❌</button>
+        {{ item.name }} x{{ item.quantity }} – ₹{{ item.price * item.quantity }}
+        <button (click)="decreaseQuantity(i)">➖</button>
+        <button (click)="removeFromCart(i)">❌</button>
       </li>
     </ul>
     <p class="total"><strong>Total: ₹{{ total }}</strong></p>
@@ -39,7 +39,7 @@
 </div>
 
 <!-- 💳 Payment Popup -->
-<div class="payment-popup" *ngIf="showPaymentPopup">
+<div class="payment-popup" *ngIf="showPaymentPopup && !orderConfirmed">
   <div class="popup-box">
     <h3>💳 Pay First</h3>
     <p>Please complete your payment before finalizing your order.</p>
@@ -48,3 +48,22 @@
     <button class="cancel-btn" (click)="showPaymentPopup = false">Cancel</button>
   </div>
 </div>
+
+<!-- ✅ FINAL BILL ONLY -->
+<div class="final-bill" *ngIf="orderConfirmed">
+  <h2>✅ Order Confirmed!</h2>
+  <p>🧑‍🍳 Customer: <strong>{{ customerName }}</strong></p>
+  <p>📱 Mobile: {{ customerMobile }}</p>
+  <p>🪑 Table: {{ tableNumber }}</p>
+  <p>🕒 Ordered at: {{ orderTime | date:'shortTime' }}</p>
+  <hr />
+  <h3>🧾 Final Bill</h3>
+  <ul>
+    <li *ngFor="let item of confirmedItems">
+      {{ item.name }} x{{ item.quantity }} – ₹{{ item.price * item.quantity }}
+    </li>
+  </ul>
+  <p class="total"><strong>Total Paid: ₹{{ confirmedTotal }}</strong></p>
+  <p>🙏 Thank you for ordering!</p>
+</div>
+   

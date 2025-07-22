@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-menu',
@@ -12,96 +13,100 @@ import { CommonModule } from '@angular/common';
 export class MenuComponent {
   customerName: string = '';
   customerMobile: string = '';
-tableNumber;
-showPaymentPopup: boolean = false;
+  tableNumber: string | number = 'Unknown';
 
+  foodItems: any[] = [];
   cart: any[] = [];
+
   showBill: boolean = false;
-orderConfirmed: boolean = false;
-orderTime: Date = new Date(); // save time
+  showPaymentPopup: boolean = false;
+  orderConfirmed: boolean = false;
+  orderTime: Date = new Date();
 
-  foodItems = [
-    {
-      category: 'Starter',
-      items: [
-        { name: 'Veg Manchurian', price: 160 },
-        { name: 'Paneer Tikka', price: 190 },
-        { name: 'Sweet Corn Soup', price: 110 }
-      ]
-    },
-    {
-      category: 'Main Course',
-      items: [
-        { name: 'Paneer Butter Masala', price: 220 },
-        { name: 'Veg Biryani', price: 180 },
-        { name: 'Tandoori Roti', price: 25 }
-      ]
-    },
-    {
-      category: 'Dessert',
-      items: [
-        { name: 'Gulab Jamun', price: 50 },
-        { name: 'Rasgulla', price: 60 },
-        { name: 'Ice Cream', price: 70 }
-      ]
+  confirmedItems: any[] = [];
+  confirmedTotal: number = 0;
+
+  constructor(
+    private route: ActivatedRoute,
+    private menuService: MenuService
+  ) {
+    // Load customer info from local storage
+    const data = localStorage.getItem('customerInfo');
+    if (data) {
+      const customer = JSON.parse(data);
+      this.customerName = customer.name || '';
+      this.customerMobile = customer.mobile || '';
+      this.tableNumber = customer.table || 'Unknown';
     }
-  ];
 
-  constructor(private route: ActivatedRoute) {
-  const data = localStorage.getItem('customerInfo');
-if (data) {
-  const customer = JSON.parse(data);
-  this.customerName = customer.name || '';
-  this.customerMobile = customer.mobile || '';
-  this.tableNumber = customer.table || 'Unknown';
-}
+    // Load food items from service
+    this.foodItems = this.menuService.getMenu();
   }
 
+  // Add item to cart or increase quantity
   addToCart(item: any) {
-    this.cart.push(item);
+    const existing = this.cart.find(i => i.name === item.name);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      this.cart.push({ ...item, quantity: 1 });
+    }
   }
 
+  // Decrease quantity or remove item
+  decreaseQuantity(index: number) {
+    const item = this.cart[index];
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+    } else {
+      this.cart.splice(index, 1);
+    }
+  }
+
+  // Remove item from cart
   removeFromCart(index: number) {
     this.cart.splice(index, 1);
   }
 
+  // Show/hide bill section
   toggleBill() {
     this.showBill = !this.showBill;
   }
 
-  scrollToCart() {
-    const cartElement = document.querySelector('.cart-section');
-    if (cartElement) {
-      cartElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
+  // Calculate total bill
   get total(): number {
-    return this.cart.reduce((sum, item) => sum + item.price, 0);
+    return this.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }
+
+  // Open payment popup
   placeOrder() {
-  this.showPaymentPopup = true;
-}
+    this.showPaymentPopup = true;
+    this.showBill = false;
+  }
 
-confirmPayment() {
-  const order = {
-    customerName: this.customerName,
-    customerMobile: this.customerMobile,
-    tableNumber: this.tableNumber,
-    items: this.cart,
-    total: this.total,
-    time: new Date()
-  };
+  // Confirm payment and finalize order
+  confirmPayment() {
+    const order = {
+      customerName: this.customerName,
+      customerMobile: this.customerMobile,
+      tableNumber: this.tableNumber,
+      items: this.cart,
+      total: this.total,
+      time: new Date()
+    };
 
-  localStorage.setItem('lastOrder', JSON.stringify(order));
+    // Save to localStorage for history
+    localStorage.setItem('lastOrder', JSON.stringify(order));
 
-  this.orderTime = order.time;
-  this.orderConfirmed = true;
-  this.showBill = true;
-  this.showPaymentPopup = false;
+    // Store confirmed items separately for final display
+    this.confirmedItems = [...this.cart];
+    this.confirmedTotal = this.total;
+    this.orderTime = order.time;
 
-  alert('✅ Payment successful. Order placed!');
-}
-
-
+    // Finalize order and reset
+    this.orderConfirmed = true;
+    this.cart = [];
+    this.showBill = false;
+    this.showPaymentPopup = false;
+  }
 }
